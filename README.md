@@ -6,7 +6,7 @@ shaped directory tree and randomly places any number of files of any size within
 ### Precompiled Static Binary (Recommendation)
 * Download Msys64
   ```sh
-  download and install https://github.com/msys2/msys2-installer/releases/download/2025-08-30/msys2-x86_64-20250830.exe
+  https://github.com/msys2/msys2-installer/releases/download/2025-08-30/msys2-x86_64-20250830.exe
   ```
 * Install compiler & extensions
   ```sh
@@ -51,3 +51,4 @@ Generate 1,000,000 empty files in 55986 directories with 16 threads writing the 
 ```sh
 gen-dataset -d 6 -b 6 -c 1000000 -t 16
 ```
+
