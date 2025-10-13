@@ -75,10 +75,11 @@ int main(int argc, char* argv[]) {
         }
         else if (!strcmp(*(argv + i), "-t") && argc > i + 1) {
           threads = *(argv + i + 1);
-          if (argc > i + 2 && *(*(argv + i + 2)) != '-' && strcmp(*(argv + i + 2), "-y") && strcmp(*(argv + i + 2), "-n")){
+          if (argc > i + 2 && *(*(argv + i + 2)) != '-' && strcmp(*(argv + i + 2), "-y") && strcmp(*(argv + i + 2), "-n")) {
             if (argc > i + 3 && *(*(argv + i + 3)) == '-' && strcmp(*(argv + i + 3), "-y") && strcmp(*(argv + i + 3), "-n")) throw logic_error("Usage.");
             if (argc > i + 3 && !strcmp(*(argv + i + 3), "-y") || argc > i + 3 && !strcmp(*(argv + i + 3), "-n")
             || argc > i + 3 && !strcmp(*(argv + i + 3), "-Y") || argc > i + 3 && !strcmp(*(argv + i + 3), "-N")) prompt = *(argv + i + 3);
+            else if (argc > i + 3) throw logic_error("Usage.");
             subdir = *(argv + i + 2);
           }
         }
@@ -90,7 +91,7 @@ int main(int argc, char* argv[]) {
           }
         }
       }
-      buffer = ((size && !buffer) ? "1Mib" : nullptr);
+      buffer = ((size && !buffer) ? "1MiB" : nullptr);
       depth = (branch && !depth ? "1" : depth);
       if (branch && subdir) {
         printf("use --help");

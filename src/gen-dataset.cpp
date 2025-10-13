@@ -1,6 +1,6 @@
 #include "gen-dataset.hpp"
 
-void create_depth(unsigned branch, unsigned depth, const char *path, vector<string>& folders_id) {
+void create_depth(const unsigned& branch, const unsigned& depth, const char* path, vector<string>& folders_id) {
   if (!depth) return;
   for (unsigned i = 1; i <= branch; ++i) {
     string temp_path = fmt::format("{}/Sub{}", path, i);
@@ -11,7 +11,7 @@ void create_depth(unsigned branch, unsigned depth, const char *path, vector<stri
   
 }
 
-void is_digit(const char* argv, const unsigned length, bool point) {
+void is_digit(const char* argv, const unsigned& length, bool point) {
   if (!argv) 
     throw runtime_error("Argument is null");
   for (unsigned i = 0; i < length; ++i) {
@@ -25,7 +25,7 @@ void is_digit(const char* argv, const unsigned length, bool point) {
   }
 }
 
-size_t get_size(const char* argv) {//1.4mib
+size_t get_size(const char* argv) {
   if (!argv) return 0;
   unsigned length = strlen(argv);
   is_digit(argv, length - 3, true);
@@ -36,7 +36,7 @@ size_t get_size(const char* argv) {//1.4mib
   const char* types[len] = {"kib", "mib", "gib", "tib"};
   for (unsigned i = 0; i < len; ++i) {
     if (!strcmp(start, *(types + i))) break;
-    if (i == len - 1 && strcmp(start, *(types + i))) throw runtime_error("Dont support this size.");
+    if (i == len - 1 && strcmp(start, *(types + i))) throw runtime_error("This size type not support.");
   }
   char c_size[length - 2];
   c_size[length - 3] = '\0';
@@ -86,6 +86,7 @@ void generate(const char *c_branch, const char *c_files, const char *c_depth, co
     is_digit(c_threads, strlen(c_threads));
     threads_count = stoul(c_threads);
   }
+  unsigned total_dirs = (!depth ? 0 : static_cast<unsigned>(pow(branch, depth)));
   if (subdir) name_check(subdir);
   vector<char> size(get_size(c_size), 'A');
   vector<char> buffer(get_size(c_buffer), 'A');
@@ -102,17 +103,26 @@ void generate(const char *c_branch, const char *c_files, const char *c_depth, co
   progress_bar(files_count);
   if (threads_count) {
     list<thread> threads;
-    unsigned base_files = files_count / threads_count;
-    unsigned remain_files = files_count % threads_count;
+    unsigned base_files = 0;
+    unsigned remain_files = 0;
     if (branch && depth) {
+      total_dirs = (total_dirs > files_count ? files_count : total_dirs);
+      base_files = files_count / total_dirs;
+      remain_files = files_count % total_dirs;
+      unsigned base_dirs = total_dirs / threads_count;
+      unsigned remain_dirs = total_dirs % threads_count;
       create_depth(branch, depth, ".", folders_id);
+      unsigned index = 0;
       for (unsigned i = 0; i < threads_count; ++i) {
-        threads.push_back(thread([i, &threads_count, &branch, &depth, &folders_id, &remain_files, &base_files, &size, &buffer](){
-            create_files(0, base_files + (i < remain_files ? 1 : 0), folders_id.at(i % folders_id.size()).c_str(), size, buffer);
+        threads.push_back(thread([i, &index, &remain_dirs, &base_dirs, &threads_count, &branch, &depth, &folders_id, &remain_files, &base_files, &size, &buffer](){
+          for (unsigned j = 0; j < base_dirs + (i < remain_dirs ? 1 : 0); ++j)
+            create_files(0, base_files + (index <= remain_files ? 1 : 0), folders_id.at(index++).c_str(), size, buffer);
         }));
       }
     }
-    if (subdir && !branch && !depth) {
+    else if (subdir && !branch && !depth) {
+      base_files = files_count / threads_count;
+      remain_files = files_count % threads_count;
       unsigned start = 0;
       filesystem::create_directory(subdir);
       for (unsigned i = 0; i < threads_count; ++i) {
@@ -124,6 +134,8 @@ void generate(const char *c_branch, const char *c_files, const char *c_depth, co
       }
     }
     else {
+      base_files = files_count / threads_count;
+      remain_files = files_count % threads_count;
       unsigned start = 0;
       for (unsigned i = 0; i < threads_count; ++i) {
         unsigned end = start + base_files + (i < remain_files ? 1 : 0);
@@ -138,9 +150,8 @@ void generate(const char *c_branch, const char *c_files, const char *c_depth, co
   else {
     if (branch && depth || subdir) {
       if (branch && depth) {
-        unsigned total_dirs = (!depth ? 0 : static_cast<unsigned>(pow(branch, depth)));
-        unsigned base_files = total_dirs ? files_count / total_dirs : 0;
-        unsigned remain_files = total_dirs ? files_count % total_dirs : 0;
+        unsigned base_files = files_count / total_dirs;
+        unsigned remain_files = files_count % total_dirs;
         create_depth(branch, depth, ".", folders_id);
         for (unsigned i = 0; i < total_dirs; ++i)
           create_files(0, base_files + (i < remain_files ? 1 : 0), folders_id.at(i % folders_id.size()).c_str(), size, buffer);
@@ -155,10 +166,9 @@ void generate(const char *c_branch, const char *c_files, const char *c_depth, co
   }
 }
 
-void create_files(unsigned start, unsigned end, const char* path, vector<char>& size, vector<char>& buffer) {
-  if (!path) throw runtime_error("The folder_path is nullptr.");
+void create_files(const unsigned& start, const unsigned& end, const char* path, vector<char>& size, vector<char>& buffer) {
+  if (!path) throw runtime_error("The folder path is nullptr.");
   ofstream file;
-  static int count = 0;
   for (unsigned i = start; i < end; ++i) {
     file.open(fmt::format("{}/dataset{}.img", path, i + 1), ios::binary);
     if (file.is_open()) {
@@ -177,21 +187,21 @@ void create_files(unsigned start, unsigned end, const char* path, vector<char>& 
 void name_check(const char *name) {
   if (name)
     for (unsigned i = 0; i < strlen(name); ++i)
-      if (ispunct(*(name + i))) throw logic_error(fmt::format("\"{}\" Folder name correct format.", name).c_str());
+      if (ispunct(*(name + i))) throw logic_error(fmt::format("Folder name correct value.").c_str());
 }
 
 void progress_bar(const unsigned& count) {
   printf("\n");
-  for (unsigned i = 0; i <= count; ++i) {
-    float progress = static_cast<float>(i) / count;
+  for (size_t i = 0; i <= count; ++i) {
+    float progress = float(i) / count;
     int barWidth = 50;
-    int pos = static_cast<int>(barWidth * progress);
+    int pos = int(barWidth * progress);
 
     printf("\033[F");
     printf("\rFiles created: %i/%i          \n", i, count);
 
     printf("[");
-    for (unsigned j = 0; j < barWidth; ++j) {
+    for (int j = 0; j < barWidth; ++j) {
         if (j < pos) printf("=");
         else if (j == pos) printf(">");
         else printf(" ");
