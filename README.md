@@ -25,7 +25,7 @@ If a size is specified, each file will be filled with zeros up to that size.
   Open the Environment Variables, double-click on User Path, and add the following path: C:\msys64\ucrt64\bin
   ```
 ### 🧱 Build From Source
-* Get Source and Install
+📥 Get Source and Install
   ```sh
   git clone https://github.com/3bdurahman/gen-dataset.git
   cd gen-dataset
