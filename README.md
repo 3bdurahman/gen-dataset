@@ -11,7 +11,7 @@ If a size is specified, each file will be filled with zeros up to that size.
 
 ## 🧩 Installation
 
-### ⚙️ Precompiled Static Binary
+### ⚙️ Environment Setup (Recommended)
 
  📦 **Download MSYS2:**
    ```sh
