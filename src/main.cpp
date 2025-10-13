@@ -26,80 +26,44 @@ int main(int argc, char* argv[]) {
   fflush(stdout);
     }
     else if (argc > 2) {
-      for (unsigned i = 1; i < argc; i += 2) {
-        if (!strcmp(*(argv + i), "-b") && argc > i + 1) {
-          branch = *(argv + i + 1);
-          if (argc > i + 2 && *(*(argv + i + 2)) != '-' && strcmp(*(argv + i + 2), "-y") && strcmp(*(argv + i + 2), "-n")){
-            if (argc > i + 3 && *(*(argv + i + 3)) == '-' && strcmp(*(argv + i + 3), "-y") && strcmp(*(argv + i + 3), "-n")) throw logic_error("Usage.");
-            if (argc > i + 3 && !strcmp(*(argv + i + 3), "-y") || argc > i + 3 && !strcmp(*(argv + i + 3), "-n")
-            || argc > i + 3 && !strcmp(*(argv + i + 3), "-Y") || argc > i + 3 && !strcmp(*(argv + i + 3), "-N")) prompt = *(argv + i + 3);
-            subdir = *(argv + i + 2);
-            cout << prompt;
-          }
+      for (int i = 1; i < argc; ++i) {
+        const char* a = argv[i];
+        if (!strcmp(a, "-b") || !strcmp(a, "--branches")) {
+          if (i + 1 < argc && *(*(argv + i + 1)) != '-') branch = argv[++i];
+          else throw logic_error("Missing value for -b");
         }
-        else if (!strcmp(*(argv + i), "-c") && argc > i + 1) {
-          count = *(argv + i + 1);
-          if (argc > i + 2 && *(*(argv + i + 2)) != '-') {
-            if (argc > i + 3 && *(*(argv + i + 3)) == '-' && strcmp(*(argv + i + 3), "-y") && strcmp(*(argv + i + 3), "-n")) throw logic_error("Usage.");
-            if (argc > i + 3 && !strcmp(*(argv + i + 3), "-y") || argc > i + 3 && !strcmp(*(argv + i + 3), "-n")
-            || argc > i + 3 && !strcmp(*(argv + i + 3), "-Y") || argc > i + 3 && !strcmp(*(argv + i + 3), "-N")) prompt = *(argv + i + 3);
-            subdir = *(argv + i + 2);
-          }
+        else if (!strcmp(a, "-c") || !strcmp(a, "--count")) {
+          if (i + 1 < argc && *(*(argv + i + 1)) != '-') count = argv[++i];
+          else throw logic_error("Missing value for -c");
         }
-        else if (!strcmp(*(argv + i), "-d") && argc > i + 1) {
-          depth = *(argv + i + 1);
-          if (argc > i + 2 && *(*(argv + i + 2)) != '-' && strcmp(*(argv + i + 2), "-y") && strcmp(*(argv + i + 2), "-n")){
-            if (argc > i + 3 && *(*(argv + i + 3)) == '-' && strcmp(*(argv + i + 3), "-y") && strcmp(*(argv + i + 3), "-n")) throw logic_error("Usage.");
-            if (argc > i + 3 && !strcmp(*(argv + i + 3), "-y") || argc > i + 3 && !strcmp(*(argv + i + 3), "-n")
-            || argc > i + 3 && !strcmp(*(argv + i + 3), "-Y") || argc > i + 3 && !strcmp(*(argv + i + 3), "-N")) prompt = *(argv + i + 3);
-            subdir = *(argv + i + 2);
-          }
+        else if (!strcmp(a, "-d") || !strcmp(a, "--depth")) {
+          if (i + 1 < argc && *(*(argv + i + 1)) != '-') depth = argv[++i];
+          else throw logic_error("Missing value for -d");
         }
-        else if (!strcmp(*(argv + i), "-s") && argc > i + 1) {
-          size = *(argv + i + 1);
-          if (argc > i + 2 && *(*(argv + i + 2)) != '-' && strcmp(*(argv + i + 2), "-y") && strcmp(*(argv + i + 2), "-n")){
-            if (argc > i + 3 && *(*(argv + i + 3)) == '-' && strcmp(*(argv + i + 3), "-y") && strcmp(*(argv + i + 3), "-n")) throw logic_error("Usage.");
-            if (argc > i + 3 && !strcmp(*(argv + i + 3), "-y") || argc > i + 3 && !strcmp(*(argv + i + 3), "-n")
-            || argc > i + 3 && !strcmp(*(argv + i + 3), "-Y") || argc > i + 3 && !strcmp(*(argv + i + 3), "-N")) prompt = *(argv + i + 3);
-            subdir = *(argv + i + 2);
-          }
+        else if (!strcmp(a, "-s") || !strcmp(a, "--size")) {
+          if (i + 1 < argc && *(*(argv + i + 1)) != '-') size = argv[++i];
+          else throw logic_error("Missing value for -s");
         }
-        else if (!strcmp(*(argv + i), "-S") && argc > i + 1) {
-          buffer = *(argv + i + 1);
-          if (argc > i + 2 && *(*(argv + i + 2)) != '-' && strcmp(*(argv + i + 2), "-y") && strcmp(*(argv + i + 2), "-n")){
-            if (argc > i + 3 && *(*(argv + i + 3)) == '-' && strcmp(*(argv + i + 3), "-y") && strcmp(*(argv + i + 3), "-n")) throw logic_error("Usage.");
-            if (argc > i + 3 && !strcmp(*(argv + i + 3), "-y") || argc > i + 3 && !strcmp(*(argv + i + 3), "-n")
-            || argc > i + 3 && !strcmp(*(argv + i + 3), "-Y") || argc > i + 3 && !strcmp(*(argv + i + 3), "-N")) prompt = *(argv + i + 3);
-            subdir = *(argv + i + 2);
-          }
+        else if (!strcmp(a, "-S") || !strcmp(a, "--buff-size")) {
+          if (i + 1 < argc && *(*(argv + i + 1)) != '-') buffer = argv[++i];
+          else throw logic_error("Missing value for -S");
         }
-        else if (!strcmp(*(argv + i), "-t") && argc > i + 1) {
-          threads = *(argv + i + 1);
-          if (argc > i + 2 && *(*(argv + i + 2)) != '-' && strcmp(*(argv + i + 2), "-y") && strcmp(*(argv + i + 2), "-n")) {
-            if (argc > i + 3 && *(*(argv + i + 3)) == '-' && strcmp(*(argv + i + 3), "-y") && strcmp(*(argv + i + 3), "-n")) throw logic_error("Usage.");
-            if (argc > i + 3 && !strcmp(*(argv + i + 3), "-y") || argc > i + 3 && !strcmp(*(argv + i + 3), "-n")
-            || argc > i + 3 && !strcmp(*(argv + i + 3), "-Y") || argc > i + 3 && !strcmp(*(argv + i + 3), "-N")) prompt = *(argv + i + 3);
-            else if (argc > i + 3) throw logic_error("Usage.");
-            subdir = *(argv + i + 2);
-          }
+        else if (!strcmp(a, "-t") || !strcmp(a, "--threads")) {
+          if (i + 1 < argc && *(*(argv + i + 1)) != '-') threads = argv[++i];
+          else throw logic_error("Missing value for -t");
         }
-        else if (!strcmp(*(argv + i), "-y") || !strcmp(*(argv + i), "-n")) {
-          prompt = *(argv + i);
-          if (argc > i + 2 && *(*(argv + i + 2)) != '-'){
-            if (*(*(argv + i + 3)) == '-') throw logic_error("Usage.");
-            subdir = *(argv + i + 2);
-          }
-        }
+        else if (!strcmp(a, "-y") || !strcmp(a, "-Y")) prompt = "y";
+        else if (*a == '-') throw logic_error(string("Unknown flag: ") + a);
+        else subdir = a;
       }
-      buffer = ((size && !buffer) ? "1MiB" : nullptr);
-      depth = (branch && !depth ? "1" : depth);
-      if (branch && subdir) {
-        printf("use --help");
-        return 1;
-      }
-      generate(branch, count, depth, size, buffer, threads, prompt, subdir);
     }
-    else printf("use --help");
+    else {
+      printf("use --help");
+      return 1;
+    }
+    buffer = ((size && !buffer) ? "1MiB" : buffer);
+    depth = ((!depth && branch) ? "1" : depth);
+    generate(branch, count, depth, size, buffer, threads, prompt, subdir);
   } catch (const exception& err) {
     printf("Error!, %s", err.what());
   }

@@ -172,11 +172,12 @@ void create_files(const unsigned& start, const unsigned& end, const char* path, 
   for (unsigned i = start; i < end; ++i) {
     file.open(fmt::format("{}/dataset{}.img", path, i + 1), ios::binary);
     if (file.is_open()) {
-      if (size.size() && buffer.size())
+      if (size.size() && buffer.size()) {
         for (size_t j = 0; j < size.size(); j += buffer.size()) {
-          file.write(buffer.data(), buffer.size());
+          file.write(buffer.data(), buffer.size() > size.size() ? size.size() : buffer.size());
           file.flush();
         }
+      }
     }
     else throw runtime_error("Cant write in file because cant open file.");
     file.flush();
@@ -187,7 +188,7 @@ void create_files(const unsigned& start, const unsigned& end, const char* path, 
 void name_check(const char *name) {
   if (name)
     for (unsigned i = 0; i < strlen(name); ++i)
-      if (ispunct(*(name + i))) throw logic_error(fmt::format("Folder name correct value.").c_str());
+      if (ispunct(*(name + i)) && *(name + i) != '_') throw logic_error(fmt::format("Folder name correct value.").c_str());
 }
 
 void progress_bar(const unsigned& total, const unsigned& width) {
