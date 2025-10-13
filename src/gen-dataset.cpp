@@ -99,6 +99,7 @@ void generate(const char *c_branch, const char *c_files, const char *c_depth, co
     if (c != 'y') return;
   }
   vector<string> folders_id;
+  progress_bar(files_count);
   if (threads_count) {
     list<thread> threads;
     unsigned base_files = files_count / threads_count;
