@@ -22,7 +22,7 @@ If a size is specified, each file will be filled with zeros up to that size.
   launch Msys64
   pacman -S mingw-w64-ucrt-x86_64-gcc
   pacman -S mingw-w64-ucrt-x86_64-fmt
-  launch enviroment variables and double click on user path put path ucrt64/bin
+  Open the Environment Variables, double-click on User Path, and add the following path: C:\msys64\ucrt64\bin
   ```
 ### 🧱 Build From Source
 * Get Source and Install
