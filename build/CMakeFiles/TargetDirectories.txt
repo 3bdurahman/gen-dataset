@@ -1,0 +1,3 @@
+C:/Users/Abdo/Desktop/abdo/build/CMakeFiles/gen-dataset.dir
+C:/Users/Abdo/Desktop/abdo/build/CMakeFiles/edit_cache.dir
+C:/Users/Abdo/Desktop/abdo/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,3 @@
+D:\msys64\ucrt64\bin\cmake.exe -E rm -f CMakeFiles\gen-dataset.dir/objects.a
+D:\msys64\ucrt64\bin\ar.exe qc CMakeFiles\gen-dataset.dir/objects.a @CMakeFiles\gen-dataset.dir\objects1.rsp
+D:\msys64\ucrt64\bin\c++.exe -Wl,--whole-archive CMakeFiles\gen-dataset.dir/objects.a -Wl,--no-whole-archive -o gen-dataset.exe -Wl,--out-implib,libgen-dataset.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\gen-dataset.dir\linkLibs.rsp
