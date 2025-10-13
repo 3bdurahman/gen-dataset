@@ -14,14 +14,14 @@ shaped directory tree and randomly places any number of files of any size within
   pacman -S mingw-w64-ucrt-x86_64-gcc
   pacman -S mingw-w64-ucrt-x86_64-fmt
   pacman -S mingw-w64-ucrt-x86_64-make
+  pacman -S mingw-w64-ucrt-x86_64-cmake
+  launch enviroment variables and double click on user path put path ucrt64/bin
   ```
 ### From Source
 * Get Source and Install
   ```sh
   git clone https://github.com/3bdurahman/gen-dataset.git
   cd gen-dataset
-  cd build
-  mingw32-make
   ```
 
 ### Usage
