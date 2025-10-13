@@ -90,7 +90,7 @@ void generate(const char *c_branch, const char *c_files, const char *c_depth, co
   if (subdir) name_check(subdir);
   vector<char> size(get_size(c_size), 'A');
   vector<char> buffer(get_size(c_buffer), 'A');
-  if (!prompt || strcmp(prompt, "-y")) {
+  if (!prompt || strcmp(prompt, "y")) {
     size_t Total_Dirs = 0;
     for (unsigned i = 1; i <= depth; ++i)
       Total_Dirs += static_cast<size_t>(pow(branch, i));

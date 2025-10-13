@@ -1,6 +1,7 @@
 {
   "files.associations": {
     "mutex": "cpp",
-    "ostream": "cpp"
+    "ostream": "cpp",
+    "stdexcept": "cpp"
   }
 }
