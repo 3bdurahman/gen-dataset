@@ -1,20 +1,27 @@
 # gen-dataset
-A command line tool to quickly generate a lot of files in a lot of directories. This tool creates an [M-ary tree](https://en.wikipedia.org/wiki/M-ary_tree)
-shaped directory tree and randomly places any number of files of any size within this tree. The distribution of files per directory is roughly equal. If a size is provided, the files will be filled with zeros up to that size.
+
+A command-line tool to quickly generate a large number of files across a structured directory tree.  
+This tool creates an [M-ary tree](https://en.wikipedia.org/wiki/M-ary_tree)-shaped directory hierarchy and randomly places any number of files of any size within it.  
+The distribution of files per directory is roughly uniform.  
+If a size is specified, each file will be filled with zeros up to that size.
+
 ![Usage example](doc/example.gif)
-## Installation
-### Precompiled Static Binary (Recommendation)
-* Download Msys64
-  ```sh
-  https://github.com/msys2/msys2-installer/releases/download/2025-08-30/msys2-x86_64-20250830.exe
+
+---
+
+## 🧩 Installation
+
+### ⚙️ Precompiled Static Binary
+
+1. **Download MSYS2:**
+   ```sh
+   https://github.com/msys2/msys2-installer/releases/download/2025-08-30/msys2-x86_64-20250830.exe
   ```
-* Install compiler & extensions
+* Install compiler (Recomndation)
   ```sh
   launch Msys64
   pacman -S mingw-w64-ucrt-x86_64-gcc
   pacman -S mingw-w64-ucrt-x86_64-fmt
-  pacman -S mingw-w64-ucrt-x86_64-make
-  pacman -S mingw-w64-ucrt-x86_64-cmake
   launch enviroment variables and double click on user path put path ucrt64/bin
   ```
 ### From Source
