@@ -94,7 +94,7 @@ void generate(const char *c_branch, const char *c_files, const char *c_depth, co
     size_t Total_Dirs = 0;
     for (unsigned i = 1; i <= depth; ++i)
       Total_Dirs += static_cast<size_t>(pow(branch, i));
-    fmt::print("Create {} directories and {} files in {}? [y/n] ", ((Total_Dirs && !subdir) ? Total_Dirs : (subdir && !Total_Dirs) ? 1 : 0), files_count, filesystem::current_path().string());
+    printf("Create %u directories and %u files in %S? [y/n] ", ((Total_Dirs && !subdir) ? Total_Dirs : (subdir && !Total_Dirs) ? 1 : 0), files_count, filesystem::current_path().c_str());
     char c;
     scanf("%c", &c);
     if (c != 'y') return;
@@ -190,23 +190,26 @@ void name_check(const char *name) {
       if (ispunct(*(name + i))) throw logic_error(fmt::format("Folder name correct value.").c_str());
 }
 
-void progress_bar(const unsigned& count) {
-  printf("\n");
-  for (size_t i = 0; i <= count; ++i) {
-    float progress = float(i) / count;
-    int barWidth = 50;
-    int pos = int(barWidth * progress);
+void progress_bar(const unsigned& total, const unsigned& width) {
+  for (unsigned current = 1; current <= total; ++current) {
+    if (current > total) current = total;
+    double ratio = static_cast<double>(current) / total;
+    unsigned filled = static_cast<unsigned>(ratio * width);
 
-    printf("\033[F");
-    printf("\rFiles created: %i/%i          \n", i, count);
-
+    printf("\r");  
+    printf("Files created %u/%u\n", current, total);
     printf("[");
-    for (int j = 0; j < barWidth; ++j) {
-        if (j < pos) printf("=");
-        else if (j == pos) printf(">");
-        else printf(" ");
+    if (filled > 0) {
+      if (filled < width) {
+        for (unsigned i = 0; i < filled - 1; ++i) putchar('=');
+        putchar('>');
+      }
+      else for (unsigned i = 0; i < filled; ++i) putchar('=');
     }
+    for (unsigned i = filled; i < width; ++i) putchar(' ');
     printf("]");
     fflush(stdout);
+    printf("\033[F");
   }
+  printf("\n\n");
 }
