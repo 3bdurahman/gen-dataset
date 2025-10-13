@@ -17,7 +17,7 @@ If a size is specified, each file will be filled with zeros up to that size.
    ```sh
    https://github.com/msys2/msys2-installer/releases/download/2025-08-30/msys2-x86_64-20250830.exe
   ```
-* Install compiler (Recomndation)
+🛠️ Install compiler
 ```sh
   launch Msys64
   pacman -S mingw-w64-ucrt-x86_64-gcc
